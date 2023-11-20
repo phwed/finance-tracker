@@ -1,52 +1,125 @@
 import { Suspense, useEffect } from "react";
+import React from "react";
 import { useColorScheme } from "react-native";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { createNotifications } from "react-native-notificated";
+import {
+  Outfit_100Thin as thin,
+  Outfit_200ExtraLight as extraLight,
+  Outfit_300Light as light,
+  Outfit_400Regular as regular,
+  Outfit_500Medium as medium,
+  Outfit_600SemiBold as semiBold,
+  Outfit_700Bold as bold,
+  Outfit_800ExtraBold as extraBold,
+  Outfit_900Black as black
+} from "@expo-google-fonts/outfit";
 import {
   DarkTheme,
   DefaultTheme,
   ThemeProvider
 } from "@react-navigation/native";
-import { useFonts } from "expo-font";
+import * as Font from "expo-font";
 import { SplashScreen, Stack } from "expo-router";
 import { TamaguiProvider, Text, Theme } from "tamagui";
 
-import { MySafeAreaView } from "../components/MySafeAreaView";
 import config from "../tamagui.config";
+
+import { Error } from "@/theme/notificated/Error";
+import { Info } from "@/theme/notificated/Info";
+import { Success } from "@/theme/notificated/Success";
+import { Warning } from "@/theme/notificated/Warning";
 
 SplashScreen.preventAutoHideAsync();
 
 export default function Layout() {
+  const [appIsReady, setAppIsReady] = React.useState(false);
   const colorScheme = useColorScheme();
 
-  const [loaded] = useFonts({
-    Inter: require("@tamagui/font-inter/otf/Inter-Medium.otf"),
-    InterBold: require("@tamagui/font-inter/otf/Inter-Bold.otf")
+  const { NotificationsProvider } = createNotifications({
+    isNotch: true,
+    variants: {
+      success: {
+        component: Success
+      },
+      error: {
+        component: Error
+      },
+      info: {
+        component: Info
+      },
+      warning: {
+        component: Warning
+      }
+    },
+    defaultStylesSettings: {
+      darkMode: colorScheme === "dark",
+      globalConfig: {
+        titleFamily: "GillSans",
+        descriptionFamily: "GillSans"
+      }
+    }
   });
 
   useEffect(() => {
-    if (loaded) {
+    async function prepare() {
+      try {
+        await Font.loadAsync({
+          Inter: require("@tamagui/font-inter/otf/Inter-Medium.otf"),
+          InterBold: require("@tamagui/font-inter/otf/Inter-Bold.otf"),
+          Outfit: regular,
+          OutfitExtraLight: extraLight,
+          OutfitLight: light,
+          OutfitMedium: medium,
+          OutfitExtraBold: extraBold,
+          OutfitBlack: black,
+          OutfitThin: thin,
+          OutfitBold: bold,
+          OutfitSemiBold: semiBold
+        });
+
+        // other app entry apis can go here
+      } catch (e) {
+        console.warn(e);
+      } finally {
+        setAppIsReady(true);
+      }
+    }
+
+    prepare();
+  }, []);
+
+  const onLayoutRootView = React.useCallback(async () => {
+    if (appIsReady) {
       SplashScreen.hideAsync();
     }
-  }, [loaded]);
+  }, [appIsReady]);
 
-  if (!loaded) return null;
+  if (!appIsReady) {
+    return null;
+  }
 
   return (
-    <TamaguiProvider config={config}>
-      <Suspense fallback={<Text>Loading...</Text>}>
-        <Theme name={colorScheme}>
-          <ThemeProvider
-            value={colorScheme === "light" ? DefaultTheme : DarkTheme}
-          >
-            <MySafeAreaView>
+    <GestureHandlerRootView
+      style={{ flex: 1 }}
+      onLayout={onLayoutRootView}
+    >
+      <TamaguiProvider config={config}>
+        <Suspense fallback={<Text>Loading...</Text>}>
+          <Theme name={colorScheme}>
+            <NotificationsProvider />
+            <ThemeProvider
+              value={colorScheme === "light" ? DefaultTheme : DarkTheme}
+            >
               <Stack
                 screenOptions={{
                   headerShown: false
                 }}
               />
-            </MySafeAreaView>
-          </ThemeProvider>
-        </Theme>
-      </Suspense>
-    </TamaguiProvider>
+            </ThemeProvider>
+          </Theme>
+        </Suspense>
+      </TamaguiProvider>
+    </GestureHandlerRootView>
   );
 }

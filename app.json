@@ -1,14 +1,46 @@
 {
   "expo": {
-    "scheme": "tamagui-app",
+    "scheme": "finance-tracker",
     "userInterfaceStyle": "automatic",
+    "experiments": {
+      "typedRoutes": true
+    },
     "splash": {
-      "backgroundColor": "#ddffe2",
+      "backgroundColor": "#fff",
       "image": "./assets/splash.png",
       "resizeMode": "contain"
     },
     "icon": "./assets/icon.png",
     "name": "finance-tracker",
-    "slug": "finance-tracker"
+    "slug": "finance-tracker",
+
+    "plugins": [
+      [
+        "expo-updates",
+        {
+          "username": "account-username"
+        }
+      ],
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/notification-icon.png",
+          "color": "#000000",
+          "androidMode": "default"
+        }
+      ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "fea15dbb-f6e4-41f9-856e-135f034c22f0"
+      }
+    },
+    "android": {
+      "package": "com.fredadu.financetracker",
+      "softwareKeyboardLayoutMode": "pan"
+    },
+    "ios": {
+      "bundleIdentifier": "com.fredadu.financetracker"
+    }
   }
 }

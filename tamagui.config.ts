@@ -5,6 +5,9 @@ import { shorthands } from "@tamagui/shorthands";
 import { themes, tokens } from "@tamagui/themes";
 import { createTamagui } from "tamagui";
 
+import { brandTheme } from "@/theme/colors";
+import { createOutfitFont } from "@/theme/font";
+
 const animations = createAnimations({
   bouncy: {
     type: "spring",
@@ -25,8 +28,7 @@ const animations = createAnimations({
   }
 });
 
-const headingFont = createInterFont();
-const bodyFont = createInterFont();
+const outfit = createOutfitFont;
 
 const config = createTamagui({
   animations,
@@ -35,10 +37,13 @@ const config = createTamagui({
   themeClassNameOnRoot: false,
   shorthands,
   fonts: {
-    heading: headingFont,
-    body: bodyFont
+    heading: outfit,
+    body: outfit
   },
-  themes,
+  themes: {
+    ...themes,
+    brand: brandTheme
+  },
   tokens,
   media: createMedia({
     xs: { maxWidth: 660 },

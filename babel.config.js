@@ -6,6 +6,27 @@ module.exports = function (api) {
     presets: ["babel-preset-expo"],
     plugins: [
       [
+        "module-resolver",
+        {
+          alias: {
+            "@": "./",
+            "@components": "./components",
+            "@app": "./app*",
+            "@assets": "./assets",
+            "@config": "./config",
+            "@constants": "./constants",
+            "@hooks": "./hooks",
+            "@utils": "./utils",
+            "@types": "./types",
+            "@theme": "./theme",
+            "@zustand": "./zustand",
+            "@amplify": "./amplify",
+            "@providers": "./providers",
+            "@graphql": "./graphql"
+          }
+        }
+      ],
+      [
         "transform-inline-environment-variables",
         // NOTE: include is optional, you can leave this part out
         {

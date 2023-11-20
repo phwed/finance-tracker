@@ -1,90 +1,56 @@
-import { Github, Twitter } from "@tamagui/lucide-icons";
-import { Link, useRouter } from "expo-router";
+import React from "react";
 import {
-  Button,
-  H1,
-  ListItem,
-  Paragraph,
-  Separator,
-  YGroup,
-  YStack
-} from "tamagui";
+  heightPercentageToDP as hp,
+  widthPercentageToDP as wp
+} from "react-native-responsive-screen";
+import Logo from "@assets/logo.png";
+import { Image } from "expo-image";
+import { Link } from "expo-router";
+import { Button, H2, Text, View } from "tamagui";
 
-import { MyStack } from "../components/MyStack";
+import { brand } from "@/theme/colors";
 
-export default function Home() {
-  const router = useRouter();
-
+export default function index() {
   return (
-    <MyStack>
-      <YStack
-        space="$4"
-        maxWidth={600}
+    <View flex={1}>
+      <View
+        h={hp(65)}
+        bg={brand.opacity(0.3)}
+        m="$2"
+        br="$5"
       >
-        <H1 textAlign="center">Welcome to Tamagui.</H1>
-        <Paragraph textAlign="center">
-          Here&apos;s a basic starter to show navigating from one screen to
-          another.
-        </Paragraph>
-      </YStack>
+        <Image
+          source={Logo}
+          style={{
+            width: wp(90),
+            height: hp(65),
+            resizeMode: "contain"
+          }}
+        />
+      </View>
 
-      <YStack space="$2.5">
-        <Button onPress={() => router.push("/users/testuser")}>
-          Go to user page
-        </Button>
-        <Button onPress={() => router.push("/tabs")}>Go to tabs page</Button>
-      </YStack>
+      <View
+        gap="$3"
+        jc="center"
+        ai="center"
+        p="$7"
+      >
+        <H2>Manage your Finanace</H2>
 
-      <YStack space="$5">
-        <YGroup
-          bordered
-          separator={<Separator />}
-          theme="green"
+        <Text fontSize="$5">Making spending money easier and more fun</Text>
+
+        <View
+          theme="brand"
+          mt="$8"
         >
-          <YGroup.Item>
-            <Link
-              asChild
-              href="https://twitter.com/natebirdman"
-              target="_blank"
-            >
-              <ListItem
-                hoverTheme
-                title="Nate"
-                pressTheme
-                icon={Twitter}
-              />
-            </Link>
-          </YGroup.Item>
-          <YGroup.Item>
-            <Link
-              asChild
-              href="https://github.com/tamagui/tamagui"
-              target="_blank"
-            >
-              <ListItem
-                hoverTheme
-                pressTheme
-                title="Tamagui"
-                icon={Github}
-              />
-            </Link>
-          </YGroup.Item>
-          <YGroup.Item>
-            <Link
-              asChild
-              href="https://github.com/ivopr/tamagui-expo"
-              target="_blank"
-            >
-              <ListItem
-                hoverTheme
-                pressTheme
-                title="This Template"
-                icon={Github}
-              />
-            </Link>
-          </YGroup.Item>
-        </YGroup>
-      </YStack>
-    </MyStack>
+          <Link
+            href="/login"
+            asChild
+          >
+            <Button size="$5">Get Started</Button>
+          </Link>
+        </View>
+      </View>
+    </View>
   );
 }

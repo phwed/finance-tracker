@@ -1,6 +1,29 @@
 {
   "compilerOptions": {
-     "module": "ES2020"
+    "module": "ES2020",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./*"],
+      "@components/*": ["./components/*"],
+      "@app/*": ["./app/*"],
+      "@assets/*": ["./assets/*"],
+      "@constants/*": ["./constants/*"],
+      "@hooks/*": ["./hooks/*"],
+      "@theme/*": ["./theme/*"],
+      "@types/*": ["./types/*"],
+      "@utils/*": ["./utils/*"],
+      "@config/*": ["./config/*"],
+      "@providers/*": ["./providers/*"],
+      "@zustand/*": ["./zustand/*"],
+      "@graphql/*": ["./graphql/*"]
+    }
   },
-  "extends": "expo/tsconfig.base"
+  "extends": "expo/tsconfig.base",
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    ".expo/types/**/*.ts",
+    "expo-env.d.ts",
+    "app/(main)/(inventory)/add_new_inventory.tsx"
+  ]
 }
