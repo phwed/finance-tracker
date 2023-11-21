@@ -1,10 +1,13 @@
+/* eslint-disable no-useless-catch */
+// @ts-nocheck
+import { Account, Databases, ID, Query } from "appwrite";
+
 import client from "./config";
-import { Account, Databases, Query, ID } from "appwrite";
 import { ID as DBID } from "./id";
 
 const account = new Account(client);
 const databases = new Databases(client);
-
+import { DBIDS } from "./config";
 // login with email and password
 
 export const login = async (email, password) => {
@@ -37,9 +40,9 @@ export const endSession = async (sessionId) => {
 export const fetchUserDetails = async (user_id) => {
   try {
     const promise = await databases.listDocuments(
-      DBID.DATABASE,
-      DBID.COLLECTIONS.USERS,
-      [Query.equal("auth_id", user_id)]
+      DBIDS.DATABASE,
+      DBIDS.COLLECTIONS.USERS,
+      [Query.equal("uid", user_id)]
     );
     return promise;
   } catch (error) {

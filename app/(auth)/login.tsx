@@ -24,6 +24,8 @@ import * as Yup from "yup";
 
 import FormContainer from "@/components/FormContainer";
 import { brand } from "@/theme/colors";
+import { useAuthStore } from "@/zustand/stores/authStore";
+import { AUTH_ACTION_TYPES_ENUM } from "@/zustand/types/authTypes";
 
 interface ILogin {
   email: string;
@@ -34,7 +36,13 @@ export default function Login() {
   const insets = useSafeAreaInsets();
   const { notify } = useNotifications();
   const [showPassword, togglePassword] = React.useReducer((s) => !s, false);
-  const [loading, setLoading] = React.useState(false);
+
+  // zustand
+  const isLoginLoading = useAuthStore((state) => state.isLoginLoading);
+  const login = useAuthStore((state) => state.login);
+  const message = useAuthStore((state) => state.message);
+  const AUTH_ACTION_TYPE = useAuthStore((state) => state.AUTH_ACTION_TYPE);
+  const reseActionTypeAuth = useAuthStore((state) => state.reseActionTypeAuth);
 
   const router = useRouter();
 
@@ -51,25 +59,35 @@ export default function Login() {
         .required("Password is required")
     }),
     onSubmit: (values: ILogin) => {
-      setLoading(true);
-
-      setTimeout(() => {
-        setLoading(false);
-        notify("success", {
-          params: {
-            title: "Login Successful",
-            description: "Welcome back!"
-          }
-        });
-
-        router.replace("/home");
-      }, 1000);
+      login(values.email, values.password);
     }
   });
 
   const { values, setFieldValue, handleSubmit, handleBlur, errors } = formik;
 
-  console.log(errors, values);
+  console.log("AUTH_ACTION_TYPE", AUTH_ACTION_TYPE);
+
+  // side effects
+  React.useEffect(() => {
+    if (AUTH_ACTION_TYPE === AUTH_ACTION_TYPES_ENUM.LOGIN_SUCCESS) {
+      notify("success", {
+        params: {
+          title: "Login Successful",
+          description: message
+        }
+      });
+      reseActionTypeAuth();
+      router.replace("/home");
+    } else if (AUTH_ACTION_TYPE === AUTH_ACTION_TYPES_ENUM.LOGIN_ERROR) {
+      notify("error", {
+        params: {
+          title: "Login Error",
+          description: message
+        }
+      });
+      reseActionTypeAuth();
+    }
+  }, [AUTH_ACTION_TYPE]);
 
   return (
     <View
@@ -151,7 +169,7 @@ export default function Login() {
                 w="100%"
                 mt="$5"
               >
-                {loading ? <Spinner /> : "Login"}
+                {isLoginLoading ? <Spinner /> : "Login"}
               </Button>
             </View>
           </YStack>

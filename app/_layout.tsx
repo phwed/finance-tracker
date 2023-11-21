@@ -1,6 +1,6 @@
 import { Suspense, useEffect } from "react";
 import React from "react";
-import { useColorScheme } from "react-native";
+import { useColorScheme, View } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { createNotifications } from "react-native-notificated";
 import {
@@ -20,7 +20,7 @@ import {
   ThemeProvider
 } from "@react-navigation/native";
 import * as Font from "expo-font";
-import { SplashScreen, Stack } from "expo-router";
+import { Slot, SplashScreen, Stack, useRouter } from "expo-router";
 import { TamaguiProvider, Text, Theme } from "tamagui";
 
 import config from "../tamagui.config";
@@ -29,12 +29,17 @@ import { Error } from "@/theme/notificated/Error";
 import { Info } from "@/theme/notificated/Info";
 import { Success } from "@/theme/notificated/Success";
 import { Warning } from "@/theme/notificated/Warning";
+import { useAuthStore } from "@/zustand/stores/authStore";
+import { AUTH_ACTION_TYPES_ENUM } from "@/zustand/types/authTypes";
 
 SplashScreen.preventAutoHideAsync();
 
 export default function Layout() {
   const [appIsReady, setAppIsReady] = React.useState(false);
   const colorScheme = useColorScheme();
+  const appEntry = useAuthStore((state) => state.appEntry);
+  const AUTH_ACTION_TYPE = useAuthStore((state) => state.AUTH_ACTION_TYPE);
+  const router = useRouter();
 
   const { NotificationsProvider } = createNotifications({
     isNotch: true,
@@ -79,6 +84,7 @@ export default function Layout() {
         });
 
         // other app entry apis can go here
+        appEntry();
       } catch (e) {
         console.warn(e);
       } finally {
@@ -87,23 +93,26 @@ export default function Layout() {
     }
 
     prepare();
-  }, []);
+  }, [AUTH_ACTION_TYPE]);
 
   const onLayoutRootView = React.useCallback(async () => {
     if (appIsReady) {
-      SplashScreen.hideAsync();
+      if (AUTH_ACTION_TYPE === AUTH_ACTION_TYPES_ENUM.GO_TO_APP) {
+        router.replace("/home");
+        SplashScreen.hideAsync();
+      } else {
+        router.replace("/login");
+        SplashScreen.hideAsync();
+      }
     }
-  }, [appIsReady]);
+  }, [appIsReady, AUTH_ACTION_TYPE]);
 
   if (!appIsReady) {
     return null;
   }
 
   return (
-    <GestureHandlerRootView
-      style={{ flex: 1 }}
-      onLayout={onLayoutRootView}
-    >
+    <GestureHandlerRootView style={{ flex: 1 }}>
       <TamaguiProvider config={config}>
         <Suspense fallback={<Text>Loading...</Text>}>
           <Theme name={colorScheme}>
@@ -111,11 +120,12 @@ export default function Layout() {
             <ThemeProvider
               value={colorScheme === "light" ? DefaultTheme : DarkTheme}
             >
-              <Stack
-                screenOptions={{
-                  headerShown: false
-                }}
-              />
+              <View
+                style={{ flex: 1 }}
+                onLayout={onLayoutRootView}
+              >
+                <Slot />
+              </View>
             </ThemeProvider>
           </Theme>
         </Suspense>

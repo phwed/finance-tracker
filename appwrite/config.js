@@ -11,7 +11,7 @@ export default client;
 export const account = new Account(client);
 export const databases = new Databases(client);
 
-export const IDS = {
+export const DBIDS = {
   DATABASE: "finance",
   COLLECTIONS: {
     USERS: "users",

@@ -45527,6 +45527,30 @@
         "borderColorPress": "hsl(50, 100%, 48.5%)",
         "placeholderColor": "hsl(54, 100%, 86.6%)",
         "id": "light_yellow_alt2_SwitchThumb"
+      },
+      "brand": {
+        "background": "#47149B",
+        "backgroundHover": "#3F0F8C",
+        "backgroundPress": "#2A0A5F",
+        "backgroundFocus": "#3F0F8C",
+        "backgroundStrong": "#2A0A5F",
+        "backgroundLight": "#F0F9FF",
+        "backgroundTransparent": "transparent",
+        "color": "#fff",
+        "colorHover": "#F0F9FF",
+        "colorPress": "#F8B4FF",
+        "colorFocus": "#F8B4FF",
+        "colorTransparent": "#47149B",
+        "borderColor": "#47149B",
+        "borderColorHover": "#F8B4FF",
+        "borderColorFocus": "#F8B4FF",
+        "borderColorPress": "#2A0A5F",
+        "placeHolderColor": "#F8B4FF",
+        "shadowColor": "#F0F9FF",
+        "shadowColorHover": "#F8B4FF",
+        "shadowColorFocus": "#F8B4FF",
+        "shadowColorPress": "#CA8BFF",
+        "id": "brand"
       }
     },
     "tokens": {
