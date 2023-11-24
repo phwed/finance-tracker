@@ -8,7 +8,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Logo from "@assets/logo.png";
 import { Eye, EyeOff } from "@tamagui/lucide-icons";
 import { Image } from "expo-image";
-import { useRouter } from "expo-router";
+import { useFocusEffect, useRouter } from "expo-router";
 import { FormikProvider, useFormik } from "formik";
 import {
   Button,
@@ -25,7 +25,7 @@ import * as Yup from "yup";
 import FormContainer from "@/components/FormContainer";
 import { brand } from "@/theme/colors";
 import { useAuthStore } from "@/zustand/stores/authStore";
-import { AUTH_ACTION_TYPES_ENUM } from "@/zustand/types/authTypes";
+import { AUTH_ACTION_TYPES } from "@/zustand/types/authTypes";
 
 interface ILogin {
   email: string;
@@ -65,34 +65,35 @@ export default function Login() {
 
   const { values, setFieldValue, handleSubmit, handleBlur, errors } = formik;
 
-  console.log("AUTH_ACTION_TYPE", AUTH_ACTION_TYPE);
-
   // side effects
-  React.useEffect(() => {
-    if (AUTH_ACTION_TYPE === AUTH_ACTION_TYPES_ENUM.LOGIN_SUCCESS) {
-      notify("success", {
-        params: {
-          title: "Login Successful",
-          description: message
-        }
-      });
-      reseActionTypeAuth();
-      router.replace("/home");
-    } else if (AUTH_ACTION_TYPE === AUTH_ACTION_TYPES_ENUM.LOGIN_ERROR) {
-      notify("error", {
-        params: {
-          title: "Login Error",
-          description: message
-        }
-      });
-      reseActionTypeAuth();
-    }
-  }, [AUTH_ACTION_TYPE]);
+  useFocusEffect(
+    React.useCallback(() => {
+      if (AUTH_ACTION_TYPE === AUTH_ACTION_TYPES.LOGIN_SUCCESS) {
+        notify("success", {
+          params: {
+            title: "Login Successful",
+            description: message
+          }
+        });
+        reseActionTypeAuth();
+        router.replace("/home");
+      } else if (AUTH_ACTION_TYPE === AUTH_ACTION_TYPES.LOGIN_ERROR) {
+        notify("error", {
+          params: {
+            title: "Login Error",
+            description: message
+          }
+        });
+        reseActionTypeAuth();
+      }
+    }, [AUTH_ACTION_TYPE])
+  );
 
   return (
     <View
       pt={insets.top + 5}
       pb={insets.bottom}
+      bg="$background"
       px="$4"
       flex={1}
     >

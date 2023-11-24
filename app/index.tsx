@@ -5,14 +5,24 @@ import {
 } from "react-native-responsive-screen";
 import Logo from "@assets/logo.png";
 import { Image } from "expo-image";
-import { Link } from "expo-router";
-import { Button, H2, Text, View } from "tamagui";
+import { Link, Redirect } from "expo-router";
+import { Button, H2, Paragraph, Text, View } from "tamagui";
 
 import { brand } from "@/theme/colors";
+import { useAuthStore } from "@/zustand/stores/authStore";
 
 export default function index() {
+  const isLoggedin = useAuthStore((state) => state.isLoggedin);
+
+  if (isLoggedin) {
+    return <Redirect href="/home" />;
+  }
+
   return (
-    <View flex={1}>
+    <View
+      flex={1}
+      bg="$background"
+    >
       <View
         h={hp(65)}
         bg={brand.opacity(0.3)}
@@ -37,7 +47,12 @@ export default function index() {
       >
         <H2>Manage your Finanace</H2>
 
-        <Text fontSize="$5">Making spending money easier and more fun</Text>
+        <Paragraph
+          fontSize="$5"
+          textAlign="center"
+        >
+          Making spending money easier and more fun
+        </Paragraph>
 
         <View
           theme="brand"

@@ -30,7 +30,6 @@ import { Info } from "@/theme/notificated/Info";
 import { Success } from "@/theme/notificated/Success";
 import { Warning } from "@/theme/notificated/Warning";
 import { useAuthStore } from "@/zustand/stores/authStore";
-import { AUTH_ACTION_TYPES_ENUM } from "@/zustand/types/authTypes";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -38,8 +37,6 @@ export default function Layout() {
   const [appIsReady, setAppIsReady] = React.useState(false);
   const colorScheme = useColorScheme();
   const appEntry = useAuthStore((state) => state.appEntry);
-  const AUTH_ACTION_TYPE = useAuthStore((state) => state.AUTH_ACTION_TYPE);
-  const router = useRouter();
 
   const { NotificationsProvider } = createNotifications({
     isNotch: true,
@@ -83,7 +80,6 @@ export default function Layout() {
           OutfitSemiBold: semiBold
         });
 
-        // other app entry apis can go here
         appEntry();
       } catch (e) {
         console.warn(e);
@@ -93,19 +89,13 @@ export default function Layout() {
     }
 
     prepare();
-  }, [AUTH_ACTION_TYPE]);
+  }, []);
 
   const onLayoutRootView = React.useCallback(async () => {
     if (appIsReady) {
-      if (AUTH_ACTION_TYPE === AUTH_ACTION_TYPES_ENUM.GO_TO_APP) {
-        router.replace("/home");
-        SplashScreen.hideAsync();
-      } else {
-        router.replace("/login");
-        SplashScreen.hideAsync();
-      }
+      SplashScreen.hideAsync();
     }
-  }, [appIsReady, AUTH_ACTION_TYPE]);
+  }, [appIsReady]);
 
   if (!appIsReady) {
     return null;
