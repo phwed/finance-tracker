@@ -16,7 +16,6 @@ export const authSlice: StateCreator<
   AuthSliceInterface
 > = (set, get) => ({
   AUTH_ACTION_TYPE: AUTH_ACTION_TYPES.INITIAL_VALUE,
-
   isLoginLoading: false,
   uid: "",
   user: {},
@@ -70,7 +69,6 @@ export const authSlice: StateCreator<
   },
 
   login: async (email: string, password: string) => {
-    console.log("-----------------------login -----------------------");
     set({
       AUTH_ACTION_TYPE: AUTH_ACTION_TYPES.LOGIN_START,
       isLoginLoading: true

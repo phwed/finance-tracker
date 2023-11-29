@@ -12,6 +12,7 @@ declare module "*.svg" {
 }
 declare module "*.gif";
 declare module "*.json";
+declare module "*.ttf";
 
 // type Variants = {
 //   variantName: Variant<typeof YourComponent>;

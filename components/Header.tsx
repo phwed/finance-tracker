@@ -4,6 +4,8 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { LogOut } from "@tamagui/lucide-icons";
 import { Avatar, Button, H4, Paragraph, View, XStack } from "tamagui";
 
+import IconLinear from "@/components/icons/IconLinear";
+
 interface IHeader {
   onLogout: () => void;
   image_url: string;
@@ -16,7 +18,7 @@ export default function Header({ onLogout, image_url, title }: IHeader) {
   return (
     <XStack
       pt={insets.top + 10}
-      px="$5"
+      px="$4"
       pb="$3"
       jc="space-between"
     >
@@ -39,7 +41,12 @@ export default function Header({ onLogout, image_url, title }: IHeader) {
         </Avatar>
 
         <Button
-          icon={LogOut}
+          icon={
+            <IconLinear
+              name="i-logout-1"
+              size={18}
+            />
+          }
           size="$3"
           onPress={() =>
             Alert.alert("Logout", "Are you sure you want to logout?", [

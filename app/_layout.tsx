@@ -67,6 +67,8 @@ export default function Layout() {
     async function prepare() {
       try {
         await Font.loadAsync({
+          IconBold: require("../assets/icons/IconBold.ttf"),
+          IconLinear: require("../assets/icons/IconLinear.ttf"),
           Inter: require("@tamagui/font-inter/otf/Inter-Medium.otf"),
           InterBold: require("@tamagui/font-inter/otf/Inter-Bold.otf"),
           Outfit: regular,
