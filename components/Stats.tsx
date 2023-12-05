@@ -1,10 +1,11 @@
 import React from "react";
 import { useColorScheme } from "react-native";
-import { FlashList } from "@shopify/flash-list";
+import { FlatList } from "react-native-gesture-handler";
 import { CornerLeftDown, CornerRightUp } from "@tamagui/lucide-icons";
 import { Skeleton } from "moti/skeleton";
 import { Paragraph, View, XStack } from "tamagui";
 
+import TransactionStatsEmpty from "@/components/edgecases/TransactionStatsEmpty";
 import { brand } from "@/theme/colors";
 import { formatCurrency } from "@/utils/formatCurrency";
 
@@ -16,37 +17,15 @@ type ItemProps = {
 };
 
 interface IStats {
-  loading?: boolean;
-  stats?: ItemProps[];
+  loading: boolean;
+  stats: ItemProps[];
 }
 
-export default function Stats({
-  loading,
-  stats = [
-    {
-      tgname: "Income",
-      initial: 4000,
-      current: 5000,
-      tgid: "income"
-    },
-    {
-      tgname: "Expenses",
-      initial: 0,
-      current: 5000,
-      tgid: "expenses"
-    },
-    {
-      tgname: "Savings",
-      initial: 6000,
-      current: 5000,
-      tgid: "savings"
-    }
-  ]
-}: IStats) {
+export default function Stats({ loading, stats }: IStats) {
   const colorScheme = useColorScheme();
   const isDark = colorScheme === "dark";
 
-  const data = [
+  const loadinngData = [
     {
       tgname: "Income",
       initial: 4000,
@@ -69,13 +48,13 @@ export default function Stats({
 
   return (
     <View mt="$6">
-      <FlashList
-        data={loading ? data : stats}
-        extraData={data}
-        estimatedItemSize={100}
+      <FlatList
+        data={loading ? loadinngData : stats}
+        extraData={stats}
         horizontal
         ItemSeparatorComponent={() => <View width={15} />}
         showsHorizontalScrollIndicator={false}
+        ListEmptyComponent={() => <TransactionStatsEmpty loading={loading} />}
         renderItem={({ item }) => (
           <Skeleton.Group show={loading}>
             <View
@@ -140,7 +119,7 @@ export default function Stats({
                   colors={[brand[100], brand[400]]}
                 >
                   <Paragraph color="$color">
-                    {formatCurrency(item.current - item.initial)}
+                    {formatCurrency(item.current)}
                   </Paragraph>
                 </Skeleton>
                 <Skeleton

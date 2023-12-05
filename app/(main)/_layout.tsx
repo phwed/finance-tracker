@@ -36,10 +36,6 @@ export default function _layout() {
           right: wp(3),
           paddingTop: isIos ? 10 : 0,
           borderRadius: 20,
-          shadowColor: "rgb(47, 64, 85)",
-          shadowOffset: { width: 0, height: -4 },
-          shadowOpacity: 0.12,
-          shadowRadius: 16,
           height: isAndroid ? 60 : 80
         },
         tabBarBackground: () => (

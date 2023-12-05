@@ -14,6 +14,7 @@ import {
   Outfit_800ExtraBold as extraBold,
   Outfit_900Black as black
 } from "@expo-google-fonts/outfit";
+import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import {
   DarkTheme,
   DefaultTheme,
@@ -112,12 +113,14 @@ export default function Layout() {
             <ThemeProvider
               value={colorScheme === "light" ? DefaultTheme : DarkTheme}
             >
-              <View
-                style={{ flex: 1 }}
-                onLayout={onLayoutRootView}
-              >
-                <Slot />
-              </View>
+              <BottomSheetModalProvider>
+                <View
+                  style={{ flex: 1 }}
+                  onLayout={onLayoutRootView}
+                >
+                  <Slot />
+                </View>
+              </BottomSheetModalProvider>
             </ThemeProvider>
           </Theme>
         </Suspense>

@@ -36,9 +36,11 @@ export interface AuthSliceInterface {
 
   reseActionTypeAuth: () => void;
 
-  appEntry: () => void;
-  getAuthenticatedUser: () => object;
   setActionTypesAuth: (object: Partial<AuthSliceInterface>) => void;
+
+  appEntry: () => void;
+
+  getAuthenticatedUser: () => object;
 
   login: (email: string, password: string) => void;
 

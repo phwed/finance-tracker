@@ -11,12 +11,13 @@ export default client;
 export const account = new Account(client);
 export const databases = new Databases(client);
 
-export const DBIDS = {
+export const APPWRITE_IDS = {
   DATABASE: "finance",
   COLLECTIONS: {
     USERS: "users",
     INCOME: "income",
     BUDGET: "budget",
-    TRANSACTIONS: "transaction"
+    TRANSACTION: "transaction",
+    TRANSACTION_STATS: "transaction_stats"
   }
 };

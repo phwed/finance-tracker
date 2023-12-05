@@ -16,9 +16,15 @@ interface IHomeChart {
   loading?: boolean;
   chartData?: any;
   filter?: string;
+  onFilter?: () => void;
 }
 
-export default function HomeChart({ loading, filter, chartData }: IHomeChart) {
+export default function HomeChart({
+  loading,
+  filter,
+  chartData,
+  onFilter
+}: IHomeChart) {
   const colorScheme = useColorScheme();
   const isDark = colorScheme === "dark";
   return (
@@ -34,7 +40,12 @@ export default function HomeChart({ loading, filter, chartData }: IHomeChart) {
           ai="center"
         >
           <Paragraph size="$5">Transactions Summary</Paragraph>
-          <Button iconAfter={ChevronDown}>{filter}</Button>
+          <Button
+            iconAfter={ChevronDown}
+            onPress={onFilter}
+          >
+            {filter}
+          </Button>
         </XStack>
 
         <If

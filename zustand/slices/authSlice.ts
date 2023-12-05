@@ -1,8 +1,7 @@
 import { StateCreator } from "zustand";
 
-import { account, databases } from "@/appwrite/config";
-import { DBIDS } from "@/appwrite/config";
-import { endSession, fetchUserDetails } from "@/appwrite/functions";
+import { account } from "@/appwrite/config";
+import { fetchUserDetails } from "@/appwrite/functions";
 import { CombinedAuthTypes } from "@/zustand/types";
 import {
   AUTH_ACTION_TYPES,
@@ -14,7 +13,7 @@ export const authSlice: StateCreator<
   [],
   [],
   AuthSliceInterface
-> = (set, get) => ({
+> = (set) => ({
   AUTH_ACTION_TYPE: AUTH_ACTION_TYPES.INITIAL_VALUE,
   isLoginLoading: false,
   uid: "",
@@ -84,7 +83,7 @@ export const authSlice: StateCreator<
             set({
               AUTH_ACTION_TYPE: AUTH_ACTION_TYPES.LOGIN_SUCCESS,
               message: "Login was successful!.",
-              uid: response.$id,
+              uid: details.uid,
               user: {
                 name: details.name,
                 email: details.email,
@@ -116,15 +115,14 @@ export const authSlice: StateCreator<
   },
 
   signout: async () => {
-    // set({ AUTH_ACTION_TYPE: AUTH_ACTION_TYPES_ENUM.SIGNOUT_SUCCESS });
-
     const promise = account.deleteSession("current");
 
     promise
-      .then((response) => {
+      .then(() => {
         set({
           AUTH_ACTION_TYPE: AUTH_ACTION_TYPES.SIGNOUT_SUCCESS,
           uid: "",
+          user: {},
           isLoggedin: false
         });
       })

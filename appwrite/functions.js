@@ -1,14 +1,13 @@
 /* eslint-disable no-useless-catch */
-// @ts-nocheck
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 import { Account, Databases, ID, Query } from "appwrite";
 
 import client from "./config";
-import { ID as DBID } from "./id";
 
 const account = new Account(client);
 const databases = new Databases(client);
-import { DBIDS } from "./config";
-// login with email and password
+import { APPWRITE_IDS } from "./config";
 
 export const login = async (email, password) => {
   try {
@@ -40,8 +39,8 @@ export const endSession = async (sessionId) => {
 export const fetchUserDetails = async (user_id) => {
   try {
     const promise = await databases.listDocuments(
-      DBIDS.DATABASE,
-      DBIDS.COLLECTIONS.USERS,
+      APPWRITE_IDS.DATABASE,
+      APPWRITE_IDS.COLLECTIONS.USERS,
       [Query.equal("uid", user_id)]
     );
     return promise;
@@ -50,11 +49,11 @@ export const fetchUserDetails = async (user_id) => {
   }
 };
 
-export const fetchCategories = async () => {
+export const readFromCollection = async (collection_id) => {
   try {
     const promise = await databases.listDocuments(
-      DBID.DATABASE,
-      DBID.COLLECTIONS.CATEGORIES
+      APPWRITE_IDS.DATABASE,
+      collection_id
     );
     return promise;
   } catch (error) {
@@ -62,39 +61,55 @@ export const fetchCategories = async () => {
   }
 };
 
-export const createCategory = async (data) => {
+export const readFromCollectionByUid = async (collection_id, uid) => {
+  try {
+    const promise = await databases.listDocuments(
+      APPWRITE_IDS.DATABASE,
+      collection_id,
+      [Query.equal("uid", uid)]
+    );
+    return promise;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const addDocumentToCollection = async (collection_id, data) => {
   try {
     const promise = await databases.createDocument(
-      DBID.DATABASE,
-      DBID.COLLECTIONS.CATEGORIES,
+      APPWRITE_IDS.DATABASE,
+      collection_id,
       ID.unique(),
       data
     );
+    return promise;
   } catch (error) {
     throw error;
   }
 };
 
-export const updateCategory = async (id, data) => {
+export const updateDocumentInCollection = async (collection_id, id, data) => {
   try {
     const promise = await databases.updateDocument(
-      DBID.DATABASE,
-      DBID.COLLECTIONS.CATEGORIES,
+      APPWRITE_IDS.DATABASE,
+      collection_id,
       id,
       data
     );
+    return promise;
   } catch (error) {
     throw error;
   }
 };
 
-export const deleteCategory = async (id) => {
+export const deleteDocumentFromCollection = async (collection_id, id) => {
   try {
     const promise = await databases.deleteDocument(
-      DBID.DATABASE,
-      DBID.COLLECTIONS.CATEGORIES,
+      APPWRITE_IDS.DATABASE,
+      collection_id,
       id
     );
+    return promise;
   } catch (error) {
     throw error;
   }
