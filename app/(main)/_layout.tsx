@@ -26,24 +26,24 @@ export default function _layout() {
 
   return (
     <Tabs
+      safeAreaInsets={{ bottom: 0 }}
       screenOptions={{
         headerShown: false,
         tabBarShowLabel: false,
+
         tabBarStyle: {
           position: "absolute",
-          bottom: insets.bottom > 5 ? insets.bottom : 15,
-          left: wp(3),
-          right: wp(3),
-          paddingTop: isIos ? 10 : 0,
-          borderRadius: 20,
-          height: isAndroid ? 60 : 80
+          bottom: insets.bottom > 10 ? insets.bottom : 15,
+          left: wp(25),
+          right: wp(25),
+          borderRadius: 20
         },
         tabBarBackground: () => (
           <BlurView
             intensity={80}
             style={{
               ...StyleSheet.absoluteFillObject,
-              borderRadius: 20,
+              borderRadius: 50,
               overflow: "hidden",
               backgroundColor: "rgba(101, 92, 155, 0.4)"
             }}

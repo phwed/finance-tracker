@@ -37,6 +37,7 @@ export const transactionStatSlice: StateCreator<
   ) => {
     set(object);
   },
+
   getTransactionStats: (uid: string) => {
     set({
       isGetTransactionStatsLoading: true,
@@ -44,16 +45,23 @@ export const transactionStatSlice: StateCreator<
         TRANSACTION_STATS_ACTION_TYPES.GET_TRANSACTION_STATS_START
     });
 
-     console.log(uid)
-
     readFromCollectionByUid(APPWRITE_IDS.COLLECTIONS.TRANSACTION_STATS, uid)
       .then((response) => {
         if (response.documents.length === 0) {
+          console.log(
+            "-----------------No transaction stats found-----------------"
+          );
+
           set({
             isGetTransactionStatsLoading: false
           });
           return;
         }
+
+        console.log(
+          "--------------- transaction stats response -----------------"
+        );
+        console.log(JSON.stringify(response.documents[0], null, 2));
         const responseArray = response.documents.map((document) => {
           return {
             $updatedAt: document.$updatedAt,
